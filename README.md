@@ -1,4 +1,4 @@
-# RackExample
+# Grape Yaks Mongoid Example
 
 A Rack app example that show how to use Bundler, Rspec and Capybara.
 
