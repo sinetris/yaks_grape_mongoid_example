@@ -67,7 +67,7 @@ production:
     default:
       uri: <%= ENV['MONGODB_URL'] %>
       options:
-        consistency: :strong
+        read: primary
         max_retries: 1
         retry_interval: 0
 test:
@@ -77,7 +77,7 @@ test:
       hosts:
         - localhost:27017
       options:
-        consistency: :strong
+        read: primary
         # In the test environment we lower the retries and retry interval to
         # low amounts for fast failures.
         max_retries: 1
