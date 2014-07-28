@@ -26,10 +26,6 @@ class ApiBase < Grape::API
     :top_level
   end
 
-  helpers do
-    def declared_params
-      declared(params, include_missing: false)
-    end
-  end
+  helpers ApiHelpers
   mount ApiUsers
 end
