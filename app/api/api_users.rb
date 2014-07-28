@@ -33,8 +33,11 @@ class ApiUsers < Grape::API
     end
     patch "/:id" do
       @user = User.find(params[:id])
-      @user.update_attributes!(declared_params)
-      @user
+      if @user.update_attributes!(declared_params)
+        @user
+      else
+        error!({message: @user.errors}, 422)
+      end
     end
 
     desc "Delete a user by id."
