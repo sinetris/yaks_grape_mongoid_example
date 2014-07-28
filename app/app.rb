@@ -19,4 +19,8 @@ class App
       [200, {'Content-Type' => 'text/plain'}, ["Welcome!"]]
     }
   end
+
+  map "/api" do
+    run ApiBase.new
+  end
 end

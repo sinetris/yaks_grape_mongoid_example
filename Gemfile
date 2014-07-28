@@ -5,6 +5,7 @@ gem 'pry'
 gem "mongoid", "~> 4.0.0"
 gem 'bcrypt'
 gem 'yaks', github: 'plexus/yaks'
+gem 'grape'
 
 group :development, :test do
   gem 'rack-test'
