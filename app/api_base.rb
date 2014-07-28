@@ -3,6 +3,12 @@ class ApiBase < Grape::API
   parser :hal, Grape::Parser::Json
   error_formatter :hal, Grape::ErrorFormatter::Json
 
+  rescue_from Mongoid::Errors::DocumentNotFound do |e|
+    rack_response({
+      message: "Document not found"
+    }.to_json, 404)
+  end
+
   rescue_from :all
 
   class Formatter

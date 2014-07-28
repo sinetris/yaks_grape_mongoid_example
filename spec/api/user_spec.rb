@@ -11,12 +11,17 @@ describe "ApiBase#users" do
 
   describe "GET /users/{id}" do
     let(:user) { FactoryGirl.build_stubbed(:user) }
-    before { expect(User).to receive(:find) { user } }
 
     it "return a user given an id" do
+      expect(User).to receive(:find) { user }
       get "/users/#{user.id}", {}, headers
       expect(last_response.body).to include user.email
       expect(last_response.status).to be 200
+    end
+
+    it "return 404 given an invalid id" do
+      get "/users/invalid-id", {}, headers
+      expect(last_response.status).to be 404
     end
   end
 
