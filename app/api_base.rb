@@ -1,5 +1,6 @@
 class ApiBase < Grape::API
   default_format :hal
+  parser :hal, Grape::Parser::Json
 
   class Formatter
     def call(object, env)
@@ -19,4 +20,11 @@ class ApiBase < Grape::API
   get do
     :top_level
   end
+
+  helpers do
+    def declared_params
+      declared(params, include_missing: false)
+    end
+  end
+  mount ApiUsers
 end
