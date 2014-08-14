@@ -1,7 +1,5 @@
 class ApiBase < Grape::API
   default_format :hal
-  parser :hal, Grape::Parser::Json
-  error_formatter :hal, Grape::ErrorFormatter::Json
 
   rescue_from Mongoid::Errors::DocumentNotFound do |e|
     rack_response({
@@ -13,6 +11,11 @@ class ApiBase < Grape::API
 
   class Formatter
     def call(object, env)
+      accept = Rack::Accept::Charset.new(env['HTTP_ACCEPT'])
+      if mime_type = accept.best_of(Yaks::Format.mime_types.values)
+        env["api.format"] = Yaks::Format.mime_types.rassoc(mime_type).first
+      end
+      
       if object == :top_level
         YaksCfg.yaks.serialize(object, env: env, mapper: RootMapper)
       elsif object.class == String
@@ -24,8 +27,10 @@ class ApiBase < Grape::API
   end
 
   Yaks::Format.mime_types.each do |name, mime_type|
-    content_type name, mime_type
-    formatter name, Formatter.new
+    content_type    name, mime_type
+    formatter       name, Formatter.new
+    parser          name, Grape::Parser::Json
+    error_formatter name, Grape::ErrorFormatter::Json
   end
 
   get do
