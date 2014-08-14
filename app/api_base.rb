@@ -11,8 +11,8 @@ class ApiBase < Grape::API
 
   class Formatter
     def call(object, env)
-      accept = Rack::Accept::Charset.new(env['HTTP_ACCEPT'])
-      if mime_type = accept.best_of(Yaks::Format.mime_types.values)
+      accept = Rack::Accept::MediaType.new(env['HTTP_ACCEPT'])
+      if mime_type = accept.best_of([nil] + Yaks::Format.mime_types.values)
         env["api.format"] = Yaks::Format.mime_types.rassoc(mime_type).first
       end
       
